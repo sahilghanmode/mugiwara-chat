@@ -4,6 +4,9 @@ import cors from "cors";
 import cookieParser from "cookie-parser";
 import mongoose from "mongoose";
 import authRoutes from "./routes/AuthRoutes.js";
+import messageRoutes from "./routes/message.routes.js";
+import userRoutes from "./routes/user.routes.js";
+
 
 dotenv.config();
 
@@ -23,6 +26,8 @@ app.use(cookieParser());
 app.use(express.json());
 
 app.use("/api/auth",authRoutes);
+app.use("/api/messages",messageRoutes);
+app.use("/api/users",userRoutes);
 
 const server=app.listen(port,()=>{
     console.log(`server is running on port ${port}`);
