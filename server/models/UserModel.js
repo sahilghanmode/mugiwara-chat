@@ -24,6 +24,11 @@ const userSchema=new mongoose.Schema({
         required:false,
     },
 
+    isOnline:{
+        type:Boolean,
+        default:false
+    },
+
     image:{
         type:String,
         required:false,

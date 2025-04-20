@@ -1,27 +1,61 @@
-import { useAppStore } from '@/store'
-import React, { useEffect } from 'react'
-import { useNavigate } from 'react-router-dom';
-import { toast } from 'sonner';
-import ContactContainer from './ccomponents/contacts-container';
-import EmptyChatContainer from './ccomponents/empty-chat-container';
-import ChatContainer from './ccomponents/chat-container';
+import Chats from "./components/chats/Chats"
+import Sidebar from "./components/sidebar/Sidebar"
+import { useState } from "react";
 
-const Chat = () => {
-  const{userInfo}=useAppStore();
-  const navigate=useNavigate();
-  useEffect(()=>{
-    if(!userInfo.profileSetup){
-      toast("please setup profile to continue.");
-      navigate("/profile");
-    }
-  },[userInfo,navigate]);
-  return (
-    <div className='flex h-[100vh] text-white overflow-hidden  '>
-      <ContactContainer/>
-      <EmptyChatContainer/>
-      <ChatContainer/>
-    </div>
-  )
+export default function Chat(){
+  const [friends,setFriend]=useState([
+    {
+      id: "1",
+      name: "Sarah Johnson",
+      avatar: "/placeholder.svg?height=40&width=40",
+      lastMessage: "Hey there! How can I help you today?",
+      lastMessageTime: new Date(Date.now() - 1000 * 60 * 5),
+      unreadCount: 0,
+      online: true,
+    },
+    {
+      id: "2",
+      name: "Michael Chen",
+      avatar: "/placeholder.svg?height=40&width=40",
+      lastMessage: "Did you see the latest project update?",
+      lastMessageTime: new Date(Date.now() - 1000 * 60 * 30),
+      unreadCount: 3,
+      online: true,
+    },
+    {
+      id: "3",
+      name: "Jessica Williams",
+      avatar: "/placeholder.svg?height=40&width=40",
+      lastMessage: "Let's schedule a meeting for next week.",
+      lastMessageTime: new Date(Date.now() - 1000 * 60 * 60 * 2),
+      unreadCount: 0,
+      online: false,
+    },
+    {
+      id: "4",
+      name: "David Rodriguez",
+      avatar: "/placeholder.svg?height=40&width=40",
+      lastMessage: "Thanks for your help yesterday!",
+      lastMessageTime: new Date(Date.now() - 1000 * 60 * 60 * 24),
+      unreadCount: 0,
+      online: true,
+    },
+    {
+      id: "5",
+      name: "Emma Thompson",
+      avatar: "/placeholder.svg?height=40&width=40",
+      lastMessage: "The design looks great! Just a few tweaks needed.",
+      lastMessageTime: new Date(Date.now() - 1000 * 60 * 60 * 48),
+      unreadCount: 0,
+      online: false,
+    },
+]);
+    
+
+    return (
+        <div className="flex ">
+            <Sidebar friends={friends} setFriend={setFriend}/>
+        </div>
+    
+    )
 }
-
-export default Chat;

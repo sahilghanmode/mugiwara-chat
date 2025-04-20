@@ -15,7 +15,14 @@ const conversationSchema=new mongoose.Schema({
 
             default:[],
         }
-    ]
+    ],
+    lastMessage:{
+        type:String,
+        default:""
+    },
+    lastMessageTime:{
+        type:Date
+    }
 },{timestamps:true});
 
 const Conversation=mongoose.model("Conversation",conversationSchema);
