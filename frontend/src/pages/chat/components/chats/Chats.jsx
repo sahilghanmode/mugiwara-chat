@@ -1,9 +1,13 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Header from './Header'
 import Footer from './Footer'
 import Messages from './Messages'
+import axios from 'axios'
+import { axiosInstance } from '../../../../assets/axios.js'
 
-const Chats = ({friend,setSelectedFriend}) => {
+const Chats = ({friend,setSelectedFriend,updateFriendLastMessage}) => {
+
+
   const [messages,setMessages]=useState([
     {
       id: "1",
@@ -28,7 +32,7 @@ const Chats = ({friend,setSelectedFriend}) => {
     <div className='flex flex-1 flex-col w-full'>
       <Header friend={friend} />
       <Messages chats={messages} friend={friend}/>
-      <Footer messages={messages} setMessages={setMessages} friend={friend} setSelectedFriend={setSelectedFriend}/>
+      <Footer messages={messages} setMessages={setMessages} friend={friend} setSelectedFriend={setSelectedFriend} updateFriendLastMessage={updateFriendLastMessage}/>
     </div>
   )
 }

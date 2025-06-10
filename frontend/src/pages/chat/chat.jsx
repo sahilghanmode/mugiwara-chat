@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import Chats from "./components/chats/Chats"
 import Sidebar from "./components/sidebar/Sidebar"
 import { useState } from "react";
@@ -50,6 +51,9 @@ export default function Chat(){
       online: false,
     },
 ]);
+
+    const navigate=useNavigate()
+
     
 
     return (

@@ -22,6 +22,11 @@ const conversationSchema=new mongoose.Schema({
     },
     lastMessageTime:{
         type:Date
+    },
+    unRead:{
+        type:Map,
+        of:Number,
+        default:{}
     }
 },{timestamps:true});
 

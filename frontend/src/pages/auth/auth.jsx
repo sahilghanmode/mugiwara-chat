@@ -8,72 +8,65 @@ import { apiClient } from '@/lib/api-client';
 import { LOGIN_ROUTE, SIGNUP_ROUTES } from '@/utils/constants';
 import { useNavigate } from 'react-router-dom';
 import { useAppStore } from '@/store';
+import useSignup from './Hooks/useSignup';
 
 const Auth = () => {
     const navigate=useNavigate();
+    const [signupInputs,signupSetInputs]=useState({
+        username:"",
+        password:"",
+        confirmPassword:"",
+
+    });
+
+    const [signInInputs, signInSetInputs]=useState({
+        username:"",
+        password:"",
+    })
     const {setUserInfo}=useAppStore();
-    const [email,setEmail]=useState("");
-    const[password,setPassword]=useState("");
-    const[confirmPassword,setConfirmPassword]=useState("");
-    const valideLogin=()=>{
-        if(!email.length){
-            toast.error("email is required");
-            return false;
-        }
-        if(!password.length){
-            toast.error("Password is required");
-            return false;
-        }
-        
-        return true;
-    }
 
-    const validateSignup=()=>{
-        if(!email.length){
-            toast.error("email is required");
-            return false;
-        }
-        if(!password.length){
-            toast.error("Password is required");
-            return false;
-        }
-        if(password!==confirmPassword){
-            toast.error("password and confirm password should be same");
-            return false;
-        }
-        return true;
-    }
-
-    const handeLogin=async()=>{
-        if(valideLogin()){
-            const res=await apiClient.post(LOGIN_ROUTE,{email,password},{withCredentials:true});
-            console.log({res});
-
-            if(res.data.user.id){
-                console.log(res.data.user.email);
-                setUserInfo(res.data.user);
-                
-                
-                if(res.data.user.profileSetup){     
-                    navigate("/chat");
-                }
-                else navigate("/profile");
-            }
-        }
-        
-    }
-
-    const handleSignup=async()=>{
-        if(validateSignup()){
-            const res = await apiClient.post(SIGNUP_ROUTES,{email,password},{withCredentials:true});
-
-            if(res.status===201){
-                setUserInfo(res.data.user);
-                navigate("/profile");
+    const{loading,signup}=useSignup()
     
-            }
-            console.log({res});
-        }
+    // const valideLogin=()=>{
+    //     if(!email.length){
+    //         toast.error("email is required");
+    //         return false;
+    //     }
+    //     if(!password.length){
+    //         toast.error("Password is required");
+    //         return false;
+    //     }
+        
+    //     return true;
+    // }
+
+    // const validateSignup=()=>{
+    //     if(!email.length){
+    //         toast.error("email is required");
+    //         return false;
+    //     }
+    //     if(!password.length){
+    //         toast.error("Password is required");
+    //         return false;
+    //     }
+    //     if(password!==confirmPassword){
+    //         toast.error("password and confirm password should be same");
+    //         return false;
+    //     }
+    //     return true;
+    // }
+
+    const handeLogin=async(e)=>{
+
+        e.preventDefault()
+        console.log("login")
+        
+    }
+
+    const handleSignup=async(e)=>{
+        e.preventDefault();
+        signup(signupInputs);
+        console.log(signupInputs)
         
 
 
@@ -100,39 +93,39 @@ const Auth = () => {
 
                         </TabsList>
                         <TabsContent className='flex flex-col gap-5 mt-5' value="login">
-                            <Input placeholder="Email"
-                            type="email"
+                            <Input placeholder="Username"
+                            type="string"
                             className='rounded-full p-6'
-                            value={email}
-                            onChange={(e)=>{setEmail(e.target.value)}}/>
+                            value={signInInputs.username}
+                            onChange={(e)=>signInSetInputs({...signInInputs,username:e.target.value})}/>
 
                             <Input placeholder="Password"
                             type="password"
                             className='rounded-full p-6'
-                            value={password}
-                            onChange={(e)=>{setPassword(e.target.value)}}/>
+                            value={signInInputs.password}
+                            onChange={(e)=>signInSetInputs({...signInInputs,password:e.target.value})}/>
 
                             <Button className='rounded-full p-6' onClick={handeLogin}>Login</Button>
 
                         </TabsContent>
                         <TabsContent className='flex flex-col gap-5 ' value="signup">
-                            <Input placeholder="Email"
-                            type="email"
+                            <Input placeholder="Username"
+                            type="string"
                             className='rounded-full p-6'
-                            value={email}
-                            onChange={(e)=>{setEmail(e.target.value)}}/>
+                            value={signupInputs.username}
+                            onChange={(e)=>signupSetInputs({...signupInputs,username:e.target.value})}/>
 
                             <Input placeholder="Password"
                             type="password"
                             className='rounded-full p-6'
-                            value={password}
-                            onChange={(e)=>{setPassword(e.target.value)}}/>
+                            value={signupInputs.password}
+                            onChange={(e)=>signupSetInputs({...signupInputs,password:e.target.value})}/>
 
                             <Input placeholder="confirm password"
                             type="password"
                             className='rounded-full p-6'
-                            value={confirmPassword}
-                            onChange={(e)=>{setConfirmPassword(e.target.value)}}/>
+                            value={signupInputs.confirmPassword}
+                            onChange={(e)=>signupSetInputs({...signupInputs,confirmPassword:e.target.value})}/>
 
                             <Button className='rounded-full p-6' onClick={handleSignup}>SignUp</Button>
 

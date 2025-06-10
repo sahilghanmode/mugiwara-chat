@@ -3,9 +3,9 @@ import { genSalt,hash } from "bcrypt";
 
 
 const userSchema=new mongoose.Schema({
-    email:{
+    username:{
         type:String,
-        required:[true,"Email is Required."],
+        required:[true,"Username is Required."],
         unique:true,
     },
 
@@ -23,6 +23,7 @@ const userSchema=new mongoose.Schema({
         type:String,
         required:false,
     },
+    
 
     isOnline:{
         type:Boolean,

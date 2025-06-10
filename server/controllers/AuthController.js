@@ -5,18 +5,18 @@ import {renameSync,unlinkSync} from "fs"
 
 const maxAge=3*24*60*60*1000;
 
-const createToken=(email,userId)=>{
-    return jwt.sign({email,userId},process.env.JWT_SECRET,{expiresIn:maxAge});
+const createToken=(username,userId)=>{
+    return jwt.sign({username,userId},process.env.JWT_SECRET,{expiresIn:maxAge});
 };
 
 export const signup=async (req,res,next)=>{
     try{
-        const {email,password}=req.body;
-        if(!email || !password){
-            return res.status(400).send("Email and password is required");
+        const {username,password}=req.body;
+        if(!username || !password){
+            return res.status(400).json({error:"username and password are required"});
         }
-        const user=await User.create({email,password});
-        res.cookie("jwt",createToken(email,user.id),{
+        const user=await User.create({username,password});
+        res.cookie("jwt",createToken(username,user.id),{
             maxAge,
             secure:true,
             sameSite:"None",
@@ -24,7 +24,7 @@ export const signup=async (req,res,next)=>{
         return res.status(201).json({
             user:{
                 id:user.id,
-                email:user.email,
+                username:user.username,
                 profileSetup:user.profileSetup,
 
             },
@@ -32,26 +32,28 @@ export const signup=async (req,res,next)=>{
 
     }catch(err){
         console.log({err});
-        return res.status(500).send("Internal Server Error");
+        return res.status(500).json({
+            error:"Internal Server Error"
+        });
     }
     
 }
 
 export const login=async (req,res,next)=>{
     try{
-        const {email,password}=req.body;
-        if(!email || !password){
-            return res.status(400).send("Email and password is required");
+        const {username,password}=req.body;
+        if(!username || !password){
+            return res.status(400).send("username and password is required");
         }
-        const user=await User.findOne({email});
+        const user=await User.findOne({username});
         if(!user){
-            return res.status(404).send("user not found");
+            return res.status(404).send("username not found");
         }
         const auth=await compare(password,user.password);
         if(!auth){
             return res.status(400).send("Password is incorrect.")
         }
-        res.cookie("jwt",createToken(email,user.id),{
+        res.cookie("jwt",createToken(username,user.id),{
             maxAge,
             secure:true,
             sameSite:"None",
@@ -59,7 +61,7 @@ export const login=async (req,res,next)=>{
         return res.status(200).json({
             user:{
                 id:user.id,
-                email:user.email,
+                username:user.username,
                 profileSetup:user.profileSetup,
                 firstName:user.firstName,
                 lastName:user.lastName,
@@ -95,7 +97,7 @@ export const getUserInfo=async (req,res,next)=>{
         return res.status(200).json({
             
                 id:userData.id,
-                email:userData.email,
+                username:userData.username,
                 profileSetup:userData.profileSetup,
                 firstName:userData.firstName,
                 lastName:userData.lastName,
@@ -130,7 +132,7 @@ export const updateProfile=async (req,res,next)=>{
         return res.status(200).json({
             
                 id:userData.id,
-                email:userData.email,
+                username:userData.username,
                 profileSetup:userData.profileSetup,
                 firstName:userData.firstName,
                 lastName:userData.lastName,

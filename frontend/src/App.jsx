@@ -7,6 +7,7 @@ import Profile from './pages/profile/profile'
 import { useAppStore } from './store'
 import { apiClient } from './lib/api-client'
 import { GET_USER_INFO } from './utils/constants'
+import { useAuthContext } from './context/AuthContext'
 
 // const PrivateRoute=({children})=>{
 //   const {userInfo}=useAppStore();
@@ -53,16 +54,17 @@ const App = () => {
       Loading...
     </div>
   }
+
+  const {authUser}=useAuthContext()
   return (
     <div>
       <BrowserRouter>
         <Routes>
           <Route path='/auth' element={
-            <Auth/>}>
+            authUser?<Navigate to="/chat"/>:<Auth/>}>
           </Route>
 
-          <Route path='/chat' element={
-            <Chat/>}>
+          <Route path='/chat' element={authUser? <Chat/> :<Navigate to="/auth"/>}>
           </Route>
 
           <Route path='/profile' element={<Profile/>}></Route>

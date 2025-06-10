@@ -1,8 +1,17 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Avatar,AvatarImage,AvatarFallback } from '@/components/ui/avatar'
 import { cn } from '@/lib/utils'
 
 const Messages = ({chats,friend}) => {
+
+    console.log(friend)
+
+    useEffect(()=>{
+        const getMessages=async()=>{
+          const messages=await axiosInstance.get(`/${friend}`)
+        }
+      },[])
+
     const formatTime=(date)=>{
         return date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })
     }

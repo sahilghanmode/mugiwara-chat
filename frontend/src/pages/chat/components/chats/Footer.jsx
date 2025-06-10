@@ -3,7 +3,7 @@ import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { Send } from 'lucide-react'
 
-const Footer = ({messages,setMessages, friend, setSelectedFriend}) => {
+const Footer = ({messages,setMessages, friend, setSelectedFriend,updateFriendLastMessage}) => {
     const [newMessage,setNewMessage]=useState("");
 
     const handleSendMessage=(e)=>{
@@ -28,6 +28,8 @@ const Footer = ({messages,setMessages, friend, setSelectedFriend}) => {
         }
 
         setSelectedFriend(updatedFriend)
+
+        updateFriendLastMessage(newMessage);
 
     }
 
